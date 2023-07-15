@@ -20,7 +20,9 @@
        (retrieve [_]
          (require [(symbol (namespace (:fn authorizer)))])
          (let [creds (eval `(~(:fn authorizer) ~(:args authorizer)))]
-           (Optional/of (Credential/from (:username creds) (:password creds)))))))))
+           (Optional/of (Credential/from (:username creds) (:password creds)))))))
+    
+    (and (not username) (not authorizer)) (.addCredential (System/getenv "DOCKER_HUB_USER") (System/getenv "DOCKER_HUB_PASSWORD"))))
 
 (defmulti configure-image (fn [image-config] (:type image-config)))
 
